@@ -1,4 +1,4 @@
-* Use of CoolProp to reproduce tables in Schroeder's Introduction to Thermal Physics (SITP)
+# Use of CoolProp to reproduce tables in Schroeder's Introduction to Thermal Physics (SITP)
 
 The python programs in this repo generate latex tables which reproduce tables in SITP using the CoolProp package.
 
