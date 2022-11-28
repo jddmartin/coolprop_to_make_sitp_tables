@@ -3,7 +3,15 @@
 import numpy as np
 import CoolProp
 
-CoolProp.CoolProp.set_reference_state('R134a','ASHRAE')
+fluid = "R134a"
+# R134a also known as HFC-134a
+# see: https://en.wikipedia.org/wiki/1,1,1,2-Tetrafluoroethane
+
+# according to:
+# http://www.coolprop.org/coolprop/HighLevelAPI.html#reference-states
+# "ASHRAE: h = 0, s = 0 @ -40C saturated liquid"
+# which corresponds to reference state mentioned in Table caption of SITP
+CoolProp.CoolProp.set_reference_state(fluid,'ASHRAE')
 
 ps = 1e5 * np.array([8.0, 10.0, 12.0,])
 ts = np.array([40.0, 50.0, 60.0,])
@@ -27,10 +35,12 @@ for p in ps:
         line.append(label)
         for t in ts:
             phase = CoolProp.CoolProp.PropsSI('Phase', 'T', 273.15 + t,
-                'P', p, 'R134a')
+                'P', p, fluid)
+            # see information on "iphase" at:
+            # http://www.coolprop.org/coolprop/LowLevelAPI.html?highlight=iphase#imposing-the-phase-optional
             if phase == CoolProp.iphase_gas:
                 v = CoolProp.CoolProp.PropsSI(
-                    quantity,'T', 273.15 + t, 'P', p, 'R134a') / 1000
+                    quantity,'T', 273.15 + t, 'P', p, fluid) / 1000
                 line.append((format % v))
             else:
                 line.append(" ")
